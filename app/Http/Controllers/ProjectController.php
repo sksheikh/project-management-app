@@ -59,7 +59,7 @@ class ProjectController extends Controller
         if($image){
             $data['image_path'] = $image->store('project/'. Str::random(), 'public');
         }
-        
+
         Project::create($data);
 
         return to_route('project.index')
@@ -116,6 +116,9 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
-        //
+        $project->delete();
+
+        return to_route('project.index')
+            ->with('success','Project was deleted!');
     }
 }
