@@ -8,18 +8,19 @@ import TextAreaInput from '@/Components/TextAreaInput'
 import SelectInput from '@/Components/SelectInput'
 
 export default function Create({auth,project}) {
-  const {data, setData, put, errors, reset} = useForm({
+  const {data, setData, post, errors, reset} = useForm({
     image: '',
     name: project.name || '',
     status: project.status || '',
     description: project.description || '',
-    due_date: project.due_date || ''
+    due_date: project.due_date || '',
+    _method: "PUT"
   })
 
   const onSubmit = (e) => {
     e.preventDefault();
     console.log(data);
-    put(route('project.update', project.id))
+    post(route('project.update', project))
   }
 
   return (
@@ -63,7 +64,7 @@ export default function Create({auth,project}) {
                           type="file"
                           name="image"
                           className="mt-1 block w-full"
-                          onChange={ e => setData('image', e.target.files[0])}/>
+                          onChange={ (e) => setData('image', e.target.files[0])}/>
 
                         <InputError
                           message={errors.image}
@@ -83,7 +84,7 @@ export default function Create({auth,project}) {
                           value={data.name}
                           className="mt-1 block w-full"
                           isFocused={true}
-                          onChange={ e => setData('name', e.target.value)}/>
+                          onChange={ (e) => setData('name', e.target.value)}/>
 
                         <InputError
                           message={errors.name}
@@ -103,7 +104,7 @@ export default function Create({auth,project}) {
                           value={data.description}
                           className="mt-1 block w-full"
                           isFocused={true}
-                          onChange={ e => setData('description', e.target.value)}/>
+                          onChange={ (e) => setData('description', e.target.value)}/>
 
                         <InputError
                           message={errors.description}
@@ -123,7 +124,7 @@ export default function Create({auth,project}) {
                           value={data.due_date}
                           className="mt-1 block w-full"
                           isFocused={true}
-                          onChange={ e => setData('due_date', e.target.value)}/>
+                          onChange={ (e) => setData('due_date', e.target.value)}/>
 
                         <InputError
                           message={errors.due_date}
@@ -142,7 +143,7 @@ export default function Create({auth,project}) {
                           value={data.status}
                           className="mt-1 block w-full"
                           isFocused={true}
-                          onChange={ e => setData('status', e.target.value)}>
+                          onChange={ (e) => setData('status', e.target.value)}>
                           <option value="">Select Status</option>
                           <option value="pending">Pending</option>
                           <option value="in_progress">In Progress</option>
