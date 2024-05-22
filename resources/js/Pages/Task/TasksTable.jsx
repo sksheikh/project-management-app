@@ -40,6 +40,13 @@ export default function TasksTable({tasks, queryParams = null, hideProjectColumn
     router.get(route('task.index', queryParams))
   }
 
+  const deleteTask = (task) => {
+    if(!window.confirm("Are you sure to delete task?")){
+      return;
+    }
+    router.delete(route('task.destroy', task));
+  }
+
   return (
     <>
       <div className='overflow-auto'>
@@ -162,16 +169,17 @@ export default function TasksTable({tasks, queryParams = null, hideProjectColumn
                 <td className='px-3 py-2'>{ task.created_at }</td>
                 <td className='px-3 py-2'>{ task.due_date }</td>
                 <td className='px-3 py-2'>{ task.createdBy.name }</td>
-                <td className='px-3 py-2'>
+                <td className='px-3 py-2 text-nowrap'>
                   <Link href={route('task.edit', task.id)}
                   className='font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1'>
                     Edit
                   </Link>
 
-                  <Link href={route('task.destroy', task.id)}
-                  className='font-medium text-red-600 dark:text-red-500 hover:underline mx-1'>
-                    Edit
-                  </Link>
+                  <button
+                    onClick={e => deleteTask(task)}
+                    className='font-medium text-red-600 dark:text-red-500 hover:underline mx-1'>
+                    Delete
+                  </button>
                 </td>
 
               </tr>
