@@ -41,7 +41,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return inertia('User/Create');
     }
 
     /**
@@ -49,7 +49,13 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        //
+        $data = $request->validated();
+        $data['password'] = bcrypt($data['password']);
+        User::create($data);
+
+        return to_route('user.index')
+            ->with('success', 'User was created');
+
     }
 
     /**
@@ -65,7 +71,9 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        //
+        return inertia('User/Edit',[
+            'user' => new UserResource($user)
+        ]);
     }
 
     /**
@@ -73,7 +81,18 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
-        //
+        $data = $request->validated();
+        $password = $date['password'] ?? null;
+        if($password){
+            $data['password'] = bcrypt($password);
+        }else{
+            unset($data['password']);
+        }
+
+        $user->update($data);
+
+        return to_route('user.index')
+            ->with('success', 'User was updated');
     }
 
     /**
