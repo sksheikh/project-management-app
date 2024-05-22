@@ -49,7 +49,6 @@ export default function Index({auth,projects, queryParams = null, success}) {
 
     router.delete(route('project.destroy', project))
   }
-
   return (
     <AuthenticatedLayout
       user={auth.user}

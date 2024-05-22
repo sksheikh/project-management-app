@@ -7,22 +7,23 @@ import InputError from '@/Components/InputError'
 import TextAreaInput from '@/Components/TextAreaInput'
 import SelectInput from '@/Components/SelectInput'
 
-export default function Create({auth,projects,users}) {
+export default function Create({auth,projects,users,task}) {
   const {data, setData, post, errors, reset} = useForm({
     image: '',
-    project_id: '',
-    name: '',
-    status: '',
-    description: '',
-    due_date: '',
-    priority: '',
-    assigned_user_id: ''
+    project_id: task.project_id || '',
+    name: task.name || '',
+    status: task.status || '',
+    description: task.description || '',
+    due_date: task.due_date || '',
+    priority: task.priority || '',
+    assigned_user_id: task.assigned_user_id || '',
+    _method: 'PUT'
   })
 
   const onSubmit = (e) => {
     e.preventDefault();
 
-    post(route('task.store'))
+    post(route('task.update', task))
   }
 
   return (
@@ -60,8 +61,8 @@ export default function Create({auth,projects,users}) {
                         <SelectInput
                           id="project_id"
                           name="project_id"
+                          value={data.project_id}
                           className="mt-1 block w-full"
-                          isFocused={true}
                           onChange={ e => setData('project_id', e.target.value)}>
                           <option value="">Select Project</option>
                           {projects.data.map(project =>
@@ -77,6 +78,11 @@ export default function Create({auth,projects,users}) {
                       </div>
 
                       {/* task image */}
+                      {task.image_path &&
+                        (<div className='my-4'>
+                          <img src={task.image_path} alt="" className='w-20' />
+                        </div>)}
+
                       <div className='mt-4'>
                         <InputLabel
                           htmlFor="task_image_path"
@@ -161,6 +167,7 @@ export default function Create({auth,projects,users}) {
                         <SelectInput
                           id="task_status"
                           name="status"
+                          value={data.status}
                           className="mt-1 block w-full"
                           onChange={ e => setData('status', e.target.value)}>
                           <option value="">Select Status</option>
@@ -183,6 +190,7 @@ export default function Create({auth,projects,users}) {
                         <SelectInput
                           id="task_priority"
                           name="priority"
+                          value={data.priority}
                           className="mt-1 block w-full"
                           onChange={ e => setData('priority', e.target.value)}>
                           <option value="">Select Priority</option>
@@ -205,6 +213,7 @@ export default function Create({auth,projects,users}) {
                         <SelectInput
                           id="task_assigned_user_id"
                           name="assigned_user_id"
+                          value={data.assigned_user_id}
                           className="mt-1 block w-full"
                           onChange={ e => setData('assigned_user_id', e.target.value)}>
                           <option value="">Select Status</option>

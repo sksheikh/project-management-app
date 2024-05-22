@@ -37,7 +37,8 @@ class TaskController extends Controller
         $tasks = $query->orderBy($sortField, $sortDirector)->paginate(10)->onEachSide(1);
         return inertia('Task/Index',[
             'tasks' => TaskResource::collection($tasks),
-            'queryParams' => request()->query() ?: null
+            'queryParams' => request()->query() ?: null,
+            'success' => session('success')
         ]);
 
     }
@@ -112,8 +113,14 @@ class TaskController extends Controller
      */
     public function edit(Task $task)
     {
+        $projects = Project::query()
+            ->orderBy('name','asc')->get();
+        $users = User::all();
+
         return inertia('Task/Edit',[
-            'task' => new TaskResource($task)
+            'task' => new TaskResource($task),
+            'projects' => ProjectResource::collection($projects),
+            'users' => UserResource::collection($users)
         ]);
     }
 

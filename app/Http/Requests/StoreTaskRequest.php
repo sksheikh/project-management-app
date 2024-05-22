@@ -25,7 +25,7 @@ class StoreTaskRequest extends FormRequest
         return [
             'name' => ['required','max:255'],
             'description' => ['string'],
-            'image' => ['nullable','image'],
+            'image' => ['required','image'],
             'status' => ['required',
                 Rule::in(['pending','in_progress','completed'])
             ],
