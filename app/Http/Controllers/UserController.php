@@ -50,6 +50,7 @@ class UserController extends Controller
     public function store(StoreUserRequest $request)
     {
         $data = $request->validated();
+        $data['email_verified_at'] = time();
         $data['password'] = bcrypt($data['password']);
         User::create($data);
 
@@ -82,7 +83,7 @@ class UserController extends Controller
     public function update(UpdateUserRequest $request, User $user)
     {
         $data = $request->validated();
-        $password = $date['password'] ?? null;
+        $password = $data['password']  ?? null ;
         if($password){
             $data['password'] = bcrypt($password);
         }else{
@@ -100,6 +101,9 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        $user->delete();
+
+        return to_route('user.index')
+            ->with('success', 'User was deleted');
     }
 }
